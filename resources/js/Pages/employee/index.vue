@@ -1,32 +1,36 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head,Link,useForm} from '@inertiajs/vue3';
-import {ref,onMounted} from "vue";
+import {ref,reactive} from "vue";
+import toast from '@/Stores/toast';
 const props = defineProps({employees: Object});
-    const searchField = ["name","email","phone","address","department"];
-    const searchValue = ref();
+const searchField = ["name","email","phone","address","department"];
+const searchValue = ref();
+const items  = ref([]);
+items.value = props.employees;
 
-    const items = props.employees;
-    const Header = [
-        { text: "Name", value: "name" },
-        { text: "Email", value: "email"},
-        { text: "Phone", value: "phone"},
-        { text: "Address", value: "address"},
-        { text: "Department", value: "department"},
-        { text: "Achievement", value: "achievement"},
-        { text: "Action", value: "action"}
-    ];
-    const form = useForm({
-        'id': null,
-    });
-    function destroy(id){
-        form.delete(`/employee/${id}`, {
-            preserveScroll:true,
-            onSuccess: () => {
-                
-            }
-        })
-    }
+const Header = [
+    { text: "Name", value: "name" },
+    { text: "Email", value: "email"},
+    { text: "Phone", value: "phone"},
+    { text: "Address", value: "address"},
+    { text: "Department", value: "department"},
+    { text: "Achievement", value: "achievement"},
+    { text: "Action", value: "action"}
+];
+const form = useForm({
+    'id': null,
+});
+function destroy(id){
+    form.delete(`/employee/${id}`, {
+        preserveScroll:true,
+        onSuccess: () => {
+            toast.remove({
+                message: 'Employee successfully Deleted!'
+            });
+        }
+    })
+}
 </script>
 
 <template>

@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head,useForm,usePage} from '@inertiajs/vue3';
+import toast from '@/Stores/toast';
 const props = defineProps({departments: Object,achievements:Object});
 
 import {ref,reactive} from 'vue';
@@ -34,11 +35,9 @@ function addData(){
     employee.post(`/employee/store`,{
         preserveScroll:true,
         onSuccess: () => {
-            // toast.add({
-            //     message: 'Task Status Changed !'
-            // });
-
-            // todo.items = reactive(props.todos);
+            toast.add({
+                message: 'Employee Created!'
+            });
         }
     })
 }

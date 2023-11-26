@@ -14,6 +14,7 @@ class EmployeeController extends Controller
         $employees = Employee::with('department','achievement')->get();
         $employees = $employees->map(function ($employee) {
             return [
+                'id'         => $employee->id,
                 'name'       => $employee->name,
                 'email'      => $employee->email,
                 'phone'      => $employee->phone,
@@ -21,7 +22,8 @@ class EmployeeController extends Controller
                 'department' => $employee->department->name,
                 'achievement' =>implode(', ', $employee->achievement->pluck('name')->toArray()),
             ];
-        });  
+        }); 
+
         return Inertia::render('employee/index',['employees'=>$employees]);
     } 
 
@@ -47,6 +49,6 @@ class EmployeeController extends Controller
 
     public function destroy($id){
         Employee::destroy($id);
-        return back();
+        return redirect()->route('employees');
     }
 }

@@ -64,3 +64,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+Follow this insstruction---------------
+1. Run this two command 'composer install', 'npm install'
+2. For dummy data run this two command 'php artisan db:seed --class=DepartmentSeeder','php artisan db:seed   --class=AchievementSeeder'
+3. After insert dummy data, Run this two command in two terminal (a) php artisan serve (b) npm run dev
