@@ -97,21 +97,31 @@ function addData(){
                     </div>
                     </div>
                 </div>
-                <div class="-mx-3 md:flex mb-2">
-                    <div class="md:w-1/2 px-3">
-                    <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-zip">
-                        achievements
-                    </label>
-                    <template v-for="(items,index) in employee.achievement" :key="index">
-                        <select class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded mb-3" id="grid-state"  v-model="items.achievement_id">
-                            <option :value="achievement.id" v-for="(achievement,index) in props.achievements" :key="index">{{ achievement.name }}</option>
-                        </select>
-                        <button v-if="index>0" @click="removeItem(index)" class="p-1 mb-1 float-right" type="button" style="background-color: rgb(216, 11, 11);color:aliceblue">Delete</button>
-                    </template>
+                <template v-for="(items,index) in employee.achievement" :key="index">   
+                        <div class="-mx-3 md:flex mb-2">         
+                            <div class="md:w-1/2 px-3">
+                                                <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-zip">
+                                                    achievements
+                                                </label>
+                                                    <select class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded mb-3" id="grid-state"  v-model="items.achievement_id">
+                                                        <option :value="achievement.id" v-for="(achievement,index) in props.achievements" :key="index">{{ achievement.name }}</option>
+                                                    </select>
+                            </div>                       
+                            <div class="md:w-1/1 px-3">
+                                <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-zip">
+                                Achievements Date
+                            </label>
+                                <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" id="grid-last-name" type="date" placeholder=""  v-model="items.achievement_date">
+                            </div>
+                            <div class="md:w-1/1 mt-8">
+                             <button v-if="index>0" @click="removeItem(index)" class="p-1" type="button" style="background-color: rgb(216, 11, 11);color:aliceblue">Delete</button>
+                            </div>                   
+                        </div>
+                </template>
+                <div class="md:w-1/1">
                     <button class="float-left mt-5 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" @click="addMoreachievement()">
-                        Add achievement
-                    </button>
-                    </div>
+                            Add achievement
+                        </button>
                 </div>
                 <button @click="addData()" type="button" class="mt-10 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                 </div>

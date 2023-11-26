@@ -11,7 +11,17 @@ use Inertia\Inertia;
 class EmployeeController extends Controller
 {
     public function index(){
-        $employees = Employee::all();
+        $employees = Employee::with('department','achievement')->get();
+        $employees = $employees->map(function ($employee) {
+            return [
+                'name'       => $employee->name,
+                'email'      => $employee->email,
+                'phone'      => $employee->phone,
+                'address'    => $employee->address,
+                'department' => $employee->department->name,
+                'achievement' =>implode(', ', $employee->achievement->pluck('name')->toArray()),
+            ];
+        });  
         return Inertia::render('employee/index',['employees'=>$employees]);
     } 
 
@@ -33,5 +43,10 @@ class EmployeeController extends Controller
         $employee->save(); 
         
         return redirect()->route('employees')->with('message', 'Employee Created Successfully');
+    }
+
+    public function destroy($id){
+        Employee::destroy($id);
+        return back();
     }
 }

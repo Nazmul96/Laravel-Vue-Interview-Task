@@ -13,4 +13,10 @@ class Employee extends Model
     {
         return $this->belongsToMany(Achievement::class)->withPivot('achievement_date');
     }
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    
 }

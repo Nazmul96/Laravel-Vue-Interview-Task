@@ -1,12 +1,32 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head,Link } from '@inertiajs/vue3';
-const props = defineProps({
-    employees: {
-        type: Object,
-        default: () => ({}),
-    },
-});
+import { Head,Link,useForm} from '@inertiajs/vue3';
+import {ref,onMounted} from "vue";
+const props = defineProps({employees: Object});
+    const searchField = ["name","email","phone","address","department"];
+    const searchValue = ref();
+
+    const items = props.employees;
+    const Header = [
+        { text: "Name", value: "name" },
+        { text: "Email", value: "email"},
+        { text: "Phone", value: "phone"},
+        { text: "Address", value: "address"},
+        { text: "Department", value: "department"},
+        { text: "Achievement", value: "achievement"},
+        { text: "Action", value: "action"}
+    ];
+    const form = useForm({
+        'id': null,
+    });
+    function destroy(id){
+        form.delete(`/employee/${id}`, {
+            preserveScroll:true,
+            onSuccess: () => {
+                
+            }
+        })
+    }
 </script>
 
 <template>
@@ -18,80 +38,20 @@ const props = defineProps({
             <div class="w-3/4 p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
            <div class="relative overflow-x-auto shadow-md md:rounded-lg">
             <Link :href="route('employee.create')" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 float-right">Add Employee</Link>  
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Product name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Color
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Category
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Price
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            <span class="sr-only">Edit</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Apple MacBook Pro 17"
-                        </th>
-                        <td class="px-6 py-4">
-                            Silver
-                        </td>
-                        <td class="px-6 py-4">
-                            Laptop
-                        </td>
-                        <td class="px-6 py-4">
-                            $2999
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                    </tr>
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Microsoft Surface Pro
-                        </th>
-                        <td class="px-6 py-4">
-                            White
-                        </td>
-                        <td class="px-6 py-4">
-                            Laptop PC
-                        </td>
-                        <td class="px-6 py-4">
-                            $1999
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                    </tr>
-                    <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            Magic Mouse 2
-                        </th>
-                        <td class="px-6 py-4">
-                            Black
-                        </td>
-                        <td class="px-6 py-4">
-                            Accessories
-                        </td>
-                        <td class="px-6 py-4">
-                            $99
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <h2 class="mb-3">Product List</h2>
+                <input placeholder="name/email/phone/address/department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2" type="text" v-model="searchValue">
+                <EasyDataTable buttons-pagination alternating :headers="Header" :items="items" :rows-per-page="10" :search-field="searchField"  :search-value="searchValue" border-cell>
+                    <template #item-action="items">
+                        <button title="Delete" type="submit" name="submit" value="Delete" class="text-white bg-gray-700  px-2 py-0.5 me-1 mr-2">
+                            Edit
+                        </button>
+                        <button  @click.prevent="destroy(items.id)" title="Delete" type="submit" name="submit" value="Delete" class="text-white bg-red-700  px-2 py-0.5 me-1">
+                            Delete
+                        </button>
+                    </template> 
+                </EasyDataTable>
+            </div>
         </div>
             </div>
         </div>
