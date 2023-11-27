@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees');
     Route::get('/employee/create', [EmployeeController::class, 'create'])->name('employee.create');
     Route::post('/employee/store', [EmployeeController::class, 'store'])->name('employee.store');
+    Route::get('/employee/{id}/edit', [EmployeeController::class, 'edit'])->name('employee.edit');
     Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 });
 

@@ -3,11 +3,15 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head,Link,useForm} from '@inertiajs/vue3';
 import {ref,reactive} from "vue";
 import toast from '@/Stores/toast';
-const props = defineProps({employees: Object});
+const props = defineProps({
+    employees: {
+        type: Object,
+        default: () => ({}),
+    },
+});
 const searchField = ["name","email","phone","address","department"];
 const searchValue = ref();
-const items  = ref([]);
-items.value = props.employees;
+
 
 const Header = [
     { text: "Name", value: "name" },
@@ -22,14 +26,16 @@ const form = useForm({
     'id': null,
 });
 function destroy(id){
-    form.delete(`/employee/${id}`, {
+    if (confirm("Are you sure you want to Delete")) {
+        form.delete(`/employee/${id}`, {
         preserveScroll:true,
         onSuccess: () => {
             toast.remove({
                 message: 'Employee successfully Deleted!'
             });
         }
-    })
+       });
+    }
 }
 </script>
 
@@ -45,12 +51,12 @@ function destroy(id){
              <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <h2 class="mb-3">Product List</h2>
                 <input placeholder="name/email/phone/address/department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2" type="text" v-model="searchValue">
-                <EasyDataTable buttons-pagination alternating :headers="Header" :items="items" :rows-per-page="10" :search-field="searchField"  :search-value="searchValue" border-cell>
-                    <template #item-action="items">
+                <EasyDataTable buttons-pagination alternating :headers="Header" :items="employees" :rows-per-page="10" :search-field="searchField"  :search-value="searchValue" border-cell>
+                    <template #item-action="employees">
                         <button title="Delete" type="submit" name="submit" value="Delete" class="text-white bg-gray-700  px-2 py-0.5 me-1 mr-2">
                             Edit
                         </button>
-                        <button  @click.prevent="destroy(items.id)" title="Delete" type="submit" name="submit" value="Delete" class="text-white bg-red-700  px-2 py-0.5 me-1">
+                        <button  @click.prevent="destroy(employees.id)" title="Delete" type="submit" name="submit" value="Delete" class="text-white bg-red-700  px-2 py-0.5 me-1">
                             Delete
                         </button>
                     </template> 

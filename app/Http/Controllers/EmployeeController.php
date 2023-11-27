@@ -34,6 +34,14 @@ class EmployeeController extends Controller
     } 
 
     public function store(Request $request){
+        $request->validate([
+            'name'       => 'required|string',
+            'email'      => 'required|email|unique:users',
+            'phone'      => 'required',
+            'address'    => 'required',
+            'department' => 'required',
+        ]);
+
         $employee = new Employee();
         $employee->name           = $request->name;  
         $employee->email          = $request->email;  
@@ -45,6 +53,11 @@ class EmployeeController extends Controller
         $employee->save(); 
         
         return redirect()->route('employees')->with('message', 'Employee Created Successfully');
+    }
+
+    public function edit($id){
+        $employee = Employee::with('department', 'achievement')->find($id);
+        dd($employee);
     }
 
     public function destroy($id){

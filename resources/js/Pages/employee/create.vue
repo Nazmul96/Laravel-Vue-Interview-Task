@@ -2,7 +2,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head,useForm,usePage} from '@inertiajs/vue3';
 import toast from '@/Stores/toast';
-const props = defineProps({departments: Object,achievements:Object});
+import InputError from "@/Components/InputError.vue";
+const props = defineProps({departments: Object,achievements:Object, errors:Object});
 
 import {ref,reactive} from 'vue';
 const employee = useForm({
@@ -19,7 +20,7 @@ const employee = useForm({
     ]
 });
 
-
+console.log()
 function addMoreachievement(){
     employee.achievement.push({
         achievement_id:'',
@@ -59,13 +60,20 @@ function addData(){
                         Name
                     </label>
                     <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="grid-first-name" type="text" placeholder="" v-model="employee.name">
-                    <p class="text-red text-xs italic">Please fill out this field.</p>
+                    <InputError v-if="errors.name"
+                        class="mt-2"
+                        :message="errors.name"
+                    />
                     </div>
                     <div class="md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-last-name">
                         Email
                     </label>
                     <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" id="grid-last-name" type="email" placeholder="" v-model="employee.email">
+                    <InputError v-if="errors.email"
+                        class="mt-2"
+                        :message="errors.email"
+                    />
                     </div>
                 </div>
                 <div class="-mx-3 md:flex mb-6">
@@ -74,13 +82,20 @@ function addData(){
                         Phone
                     </label>
                     <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4 mb-3" id="grid-first-name" type="number" placeholder=""  v-model="employee.phone">
-                    <p class="text-red text-xs italic">Please fill out this field.</p>
+                    <InputError v-if="errors.phone"
+                        class="mt-2"
+                        :message="errors.phone"
+                    />
                     </div>
                     <div class="md:w-1/2 px-3">
                     <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-last-name">
                         Adress
                     </label>
                     <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" id="grid-last-name" type="text" placeholder=""  v-model="employee.address">
+                    <InputError v-if="errors.address"
+                        class="mt-2"
+                        :message="errors.address"
+                    />
                     </div>
                 </div>
          
@@ -94,6 +109,10 @@ function addData(){
                         <option :value="department.id" v-for="(department,index) in props.departments" :key="index">{{ department.name }}</option>
                         </select>
                     </div>
+                    <InputError v-if="errors.department"
+                        class="mt-2"
+                        :message="errors.department"
+                    />
                     </div>
                 </div>
                 <template v-for="(items,index) in employee.achievement" :key="index">   
@@ -102,7 +121,7 @@ function addData(){
                                                 <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-zip">
                                                     achievements
                                                 </label>
-                                                    <select class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded mb-3" id="grid-state"  v-model="items.achievement_id">
+                                                    <select class="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded mb-3" id="grid-state"  v-model="items.achievement_id" required>
                                                         <option :value="achievement.id" v-for="(achievement,index) in props.achievements" :key="index">{{ achievement.name }}</option>
                                                     </select>
                             </div>                       
@@ -110,7 +129,7 @@ function addData(){
                                 <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-zip">
                                 Achievements Date
                             </label>
-                                <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" id="grid-last-name" type="date" placeholder=""  v-model="items.achievement_date">
+                                <input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" id="grid-last-name" type="date" placeholder=""  v-model="items.achievement_date" required>
                             </div>
                             <div class="md:w-1/1 mt-8">
                              <button v-if="index>0" @click="removeItem(index)" class="p-1" type="button" style="background-color: rgb(216, 11, 11);color:aliceblue">Delete</button>
