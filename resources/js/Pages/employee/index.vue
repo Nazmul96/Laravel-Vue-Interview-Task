@@ -53,9 +53,9 @@ function destroy(id){
                 <input placeholder="name/email/phone/address/department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-2" type="text" v-model="searchValue">
                 <EasyDataTable buttons-pagination alternating :headers="Header" :items="employees" :rows-per-page="10" :search-field="searchField"  :search-value="searchValue" border-cell>
                     <template #item-action="employees">
-                        <button title="Delete" type="submit" name="submit" value="Delete" class="text-white bg-gray-700  px-2 py-0.5 me-1 mr-2">
+                        <Link :href="route('employee.edit', employees.id)" class="text-white bg-gray-700  px-2 py-0.5 me-1 mr-2">
                             Edit
-                        </button>
+                        </Link>
                         <button  @click.prevent="destroy(employees.id)" title="Delete" type="submit" name="submit" value="Delete" class="text-white bg-red-700  px-2 py-0.5 me-1">
                             Delete
                         </button>

@@ -56,8 +56,27 @@ class EmployeeController extends Controller
     }
 
     public function edit($id){
-        $employee = Employee::with('department', 'achievement')->find($id);
-        dd($employee);
+        $departments = Department::all();
+        $achievements = Achievement::all();
+        $employee_data = Employee::with('department', 'achievement')->find($id);
+        if($employee_data){
+            $employee = [
+                'id'          => $employee_data->id,
+                'name'        => $employee_data->name,
+                'email'       => $employee_data->email,
+                'phone'       => $employee_data->phone,
+                'address'     => $employee_data->address,
+                'department'  => $employee_data->department->id,
+                'achievement' => $employee_data->achievement->map(function ($achievement) {
+                                    return [
+                                        'achievement_id'   => $achievement->id,
+                                        'achievement_date' => $achievement->pivot->achievement_date,
+                                    ];
+                                })
+            ];
+        }
+  
+        return Inertia::render('employee/edit',['employee'=>$employee,'departments'=>$departments,'achievements'=>$achievements]);
     }
 
     public function destroy($id){
