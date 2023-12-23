@@ -42,4 +42,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 });
 
+Route::get('/admin', [EmployeeController::class, 'admin']);
+
 require __DIR__.'/auth.php';

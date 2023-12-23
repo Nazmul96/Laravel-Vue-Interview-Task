@@ -83,4 +83,8 @@ class EmployeeController extends Controller
         Employee::destroy($id);
         return redirect()->route('employees');
     }
+
+    public function admin(){
+        return Inertia::render('employee/admin');
+    }
 }

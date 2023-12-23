@@ -18,6 +18,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@popperjs/core": "^2.11.8",
+        "v-calendar": "^3.1.2",
         "vue3-easy-data-table": "^1.5.47"
     }
 }
